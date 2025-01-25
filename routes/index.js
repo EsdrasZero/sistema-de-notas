@@ -2,6 +2,10 @@ const express = require("express");
 const router = express.Router();
 const professoresController = require("@controllers/professoresController");
 const notaController = require("@controllers/notaController");
+const authController = require("@controllers/authController");
+
+// Rota de autenticação
+router.post("/login", authController.login);
 
 // Rota para pegar todos os professores
 router.get("/professores", professoresController.getProfessores);

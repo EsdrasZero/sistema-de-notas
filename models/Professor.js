@@ -26,6 +26,13 @@ const Professor = sequelize.define(
   {
     tableName: "professores",
     timestamps: true,
+    hooks: {
+      beforeCreate: async (professor) => {
+        if (professor.senha) {
+          professor.senha = await bcrypt.hash(professor.senha, 10); // Hash da senha
+        }
+      },
+    },
   }
 );
 

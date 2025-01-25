@@ -1,0 +1,27 @@
+-- INSERIR PROFESSORES
+INSERT INTO professores (nome, email, senha, "createdAt", "updatedAt") VALUES
+('Roberto Souza', 'roberto@example.com', '123456', NOW(), NOW()),
+('Ana Paula', 'ana@example.com', '654321', NOW(), NOW());
+
+-- INSERIR ALUNOS
+INSERT INTO alunos (nome, turma, "createdAt", "updatedAt") VALUES
+('Lucas Silva', 'Turma A', NOW(), NOW()),
+('Maria Oliveira', 'Turma B', NOW(), NOW()),
+('Lucas Pereira', 'Turma A', NOW(), NOW()),
+('Fernanda Costa', 'Turma B', NOW(), NOW());
+
+-- INSERIR DISCIPLINAS
+INSERT INTO disciplinas (nome, "createdAt", "updatedAt") VALUES
+('Matemática', NOW(), NOW()),
+('História', NOW(), NOW()),
+('Ciências', NOW(), NOW()),
+('Geografia', NOW(), NOW());
+
+-- INSERIR NOTAS
+INSERT INTO notas (nota, "alunoId", "disciplinaId", "createdAt", "updatedAt") VALUES
+(8.5, 1, 1, NOW(), NOW()), -- Lucas Silva - Matemática
+(7.0, 1, 2, NOW(), NOW()), -- Lucas Silva - História
+(9.0, 2, 1, NOW(), NOW()), -- Maria Oliveira - Matemática
+(6.5, 2, 3, NOW(), NOW()), -- Maria Oliveira - Ciências
+(7.5, 3, 4, NOW(), NOW()), -- Lucas Pereira - Geografia
+(8.0, 4, 3, NOW(), NOW()); -- Fernanda Costa - Ciências
