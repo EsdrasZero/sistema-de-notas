@@ -10,6 +10,7 @@ const app = express();
 const Aluno = require("@models/Aluno");
 const Disciplina = require("@models/Disciplina");
 const Nota = require("@models/Nota");
+const Professor = require("@models/Professor");
 
 require("dotenv").config();
 
@@ -26,9 +27,15 @@ sequelize
 
 // Atenção ao uso de force: true! Ele recria as tabelas no banco.
 sequelize
-  .sync({ force: false })
+  .sync({ force: true })
   .then(async () => {
     console.log("Banco de dados sincronizado!");
+
+    await Professor.create({
+      nome: "Carlos Souza",
+      email: "carlos@example.com",
+      senha: "123456",
+    });
 
     // Verificar se os alunos e disciplinas já existem
     const aluno1 = await Aluno.findOrCreate({

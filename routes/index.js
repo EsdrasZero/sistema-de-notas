@@ -3,6 +3,10 @@ const router = express.Router();
 const professoresController = require("@controllers/professoresController");
 const notaController = require("@controllers/notaController");
 const authController = require("@controllers/authController");
+const authMiddleware = require("@middlewares/authMiddleware");
+
+// Rota para troca de senha
+router.put("/trocar-senha", authMiddleware, authController.trocarSenha);
 
 // Rota de autenticação
 router.post("/login", authController.login);
