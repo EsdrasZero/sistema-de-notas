@@ -13,4 +13,29 @@ const sequelize = new Sequelize(
   }
 );
 
+// Sincronizar todos os modelos com o banco de dados
+const syncDatabase = async () => {
+  try {
+    await sequelize.query('DROP TABLE IF EXISTS "disciplinas" CASCADE');
+    await sequelize.query('DROP TABLE IF EXISTS "professores" CASCADE');
+    await sequelize.query('DROP TABLE IF EXISTS "alunos" CASCADE');
+    await sequelize.query('DROP TABLE IF EXISTS "notas" CASCADE');
+    await sequelize.query(
+      'DROP SEQUENCE IF EXISTS "professores_id_seq" CASCADE'
+    );
+    await sequelize.query('DROP SEQUENCE IF EXISTS "alunos_id_seq" CASCADE');
+    await sequelize.query(
+      'DROP SEQUENCE IF EXISTS "disciplinas_id_seq" CASCADE'
+    );
+    await sequelize.query('DROP SEQUENCE IF EXISTS "notas_id_seq" CASCADE');
+
+    await sequelize.sync({ force: true }); // Use { force: true } para recriar tabelas, { alter: true } para atualizar
+    console.log("Banco de dados sincronizado com sucesso.");
+  } catch (error) {
+    console.error("Erro ao sincronizar o banco de dados:", error);
+  }
+};
+
+syncDatabase();
+
 module.exports = sequelize;

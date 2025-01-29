@@ -1,23 +1,18 @@
-const { DataTypes } = require("sequelize");
-const sequelize = require("@config/database");
-const bcrypt = require("bcrypt");
+const { Model, DataTypes } = require("sequelize");
+const sequelize = require("../config/database"); // Corrigido o caminho de importação
 
-const Professor = sequelize.define(
-  "Professor",
+class Professor extends Model {}
+
+Professor.init(
   {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
     nome: {
       type: DataTypes.STRING,
       allowNull: false,
     },
     email: {
       type: DataTypes.STRING,
-      unique: true,
       allowNull: false,
+      unique: true,
     },
     senha: {
       type: DataTypes.STRING,
@@ -25,15 +20,10 @@ const Professor = sequelize.define(
     },
   },
   {
-    tableName: "professores",
+    sequelize,
+    modelName: "Professor",
+    tableName: "professores", // Certifique-se de que o nome da tabela está em minúsculas
     timestamps: true,
-    hooks: {
-      beforeCreate: async (professor) => {
-        if (professor.senha) {
-          professor.senha = await bcrypt.hash(professor.senha, 10); // Hash da senha
-        }
-      },
-    },
   }
 );
 

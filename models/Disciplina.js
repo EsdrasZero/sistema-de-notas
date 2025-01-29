@@ -1,5 +1,5 @@
 const { DataTypes } = require("sequelize");
-const sequelize = require("@config/database");
+const sequelize = require("../config/database");
 
 const Disciplina = sequelize.define(
   "Disciplina",
@@ -19,6 +19,7 @@ const Disciplina = sequelize.define(
     timestamps: true,
   }
 );
+
 const Nota = require("./Nota");
 
 Disciplina.hasMany(Nota, {

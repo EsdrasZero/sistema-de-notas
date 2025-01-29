@@ -1,24 +1,16 @@
-require("module-alias/register");
 const express = require("express");
-const cors = require("cors");
-const routes = require("./routes/index");
-const logger = require("./middlewares/logger");
-const errorHandler = require("./middlewares/errorHandler");
-const sequelize = require("./config/database");
-const PORT = process.env.PORT || 3000;
+const sequelize = require("./config/database"); // Corrigido o caminho de importação
+const Professor = require("./models/Professor");
+const Aluno = require("./models/Aluno");
+const Disciplina = require("./models/Disciplina");
+const Nota = require("./models/Nota");
+const router = require("./routes/index");
+
 const app = express();
-const Aluno = require("@models/Aluno");
-const Disciplina = require("@models/Disciplina");
-const Nota = require("@models/Nota");
-const Professor = require("@models/Professor");
+const PORT = process.env.PORT || 3000;
 
-require("dotenv").config();
-
-app.use(cors());
 app.use(express.json());
-app.use("/api", routes); // Importando as rotas de forma centralizada
-app.use(logger);
-app.use(errorHandler);
+app.use(router);
 
 sequelize
   .authenticate()
@@ -31,55 +23,82 @@ sequelize
   .then(async () => {
     console.log("Banco de dados sincronizado!");
 
-    await Professor.create({
+    // Criar professor
+    const professorCarlos = await Professor.create({
       nome: "Carlos Souza",
       email: "carlos@example.com",
       senha: "123456",
     });
 
     // Verificar se os alunos e disciplinas já existem
-    const aluno1 = await Aluno.findOrCreate({
+    const [aluno1] = await Aluno.findOrCreate({
       where: { nome: "João Silva", turma: "Turma A" },
     });
-    const aluno2 = await Aluno.findOrCreate({
+    const [aluno2] = await Aluno.findOrCreate({
       where: { nome: "Maria Oliveira", turma: "Turma B" },
     });
 
-    const disciplina1 = await Disciplina.findOrCreate({
-      where: { nome: "Matemática" },
-    });
-    const disciplina2 = await Disciplina.findOrCreate({
-      where: { nome: "História" },
-    });
+    const disciplinasFixas = [
+      "Artes",
+      "Ciências",
+      "Educação Física",
+      "Geografia",
+      "História",
+      "Língua Portuguesa",
+      "Matemática",
+    ];
+
+    // Criar disciplinas e associar ao professor Carlos
+    for (const nome of disciplinasFixas) {
+      await Disciplina.findOrCreate({
+        where: { nome },
+        defaults: { professorId: professorCarlos.id },
+      });
+    }
 
     // Criando notas para os alunos
-    await Nota.create({
-      alunoId: aluno1[0].id,
-      disciplinaId: disciplina1[0].id,
-      nota: 7.5,
-    });
-    await Nota.create({
-      alunoId: aluno1[0].id,
-      disciplinaId: disciplina2[0].id,
-      nota: 8.0,
-    });
-    await Nota.create({
-      alunoId: aluno2[0].id,
-      disciplinaId: disciplina1[0].id,
-      nota: 6.5,
-    });
-    await Nota.create({
-      alunoId: aluno2[0].id,
-      disciplinaId: disciplina2[0].id,
-      nota: 9.0,
-    });
+    const disciplinas = await Disciplina.findAll();
 
-    console.log("Dados iniciais adicionados!");
+    const notas = [
+      {
+        alunoId: aluno1.id,
+        disciplinaId: disciplinas.find((d) => d.nome === "Matemática").id,
+        nota: 7.5,
+      },
+      {
+        alunoId: aluno1.id,
+        disciplinaId: disciplinas.find((d) => d.nome === "História").id,
+        nota: 8.0,
+      },
+      {
+        alunoId: aluno2.id,
+        disciplinaId: disciplinas.find((d) => d.nome === "Matemática").id,
+        nota: 9.0,
+      },
+      {
+        alunoId: aluno2.id,
+        disciplinaId: disciplinas.find((d) => d.nome === "História").id,
+        nota: 6.5,
+      },
+      {
+        alunoId: aluno2.id,
+        disciplinaId: disciplinas.find((d) => d.nome === "Ciências").id,
+        nota: 7.0,
+      },
+      {
+        alunoId: aluno2.id,
+        disciplinaId: disciplinas.find((d) => d.nome === "Geografia").id,
+        nota: 8.5,
+      },
+    ];
+
+    for (const nota of notas) {
+      await Nota.create(nota);
+    }
+
+    console.log("Dados iniciais inseridos com sucesso!");
   })
   .catch((err) => console.error("Erro ao sincronizar o banco de dados:", err));
-app.get("/", (req, res) => {
-  res.send("API de Lançamento de Notas está funcionando!");
-});
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);

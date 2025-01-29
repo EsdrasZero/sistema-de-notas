@@ -1,5 +1,5 @@
 const { DataTypes } = require("sequelize");
-const sequelize = require("@config/database");
+const sequelize = require("../config/database"); // Corrigido o caminho de importação
 
 const Nota = sequelize.define(
   "Nota",

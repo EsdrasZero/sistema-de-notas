@@ -1,6 +1,6 @@
-const Nota = require("@models/Nota");
-const Aluno = require("@models/Aluno");
-const Disciplina = require("@models/Disciplina");
+const Nota = require("../models/Nota"); // Corrigido o caminho de importação
+const Aluno = require("../models/Aluno"); // Corrigido o caminho de importação
+const Disciplina = require("../models/Disciplina"); // Corrigido o caminho de importação
 
 exports.lancarNota = async (req, res) => {
   const { alunoId, disciplinaId, nota } = req.body;
@@ -49,6 +49,7 @@ exports.listarNotas = async (req, res) => {
     res.status(500).json({ error: "Erro ao listar notas." });
   }
 };
+
 exports.boletimAluno = async (req, res) => {
   const { alunoId } = req.params;
 

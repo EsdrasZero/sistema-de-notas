@@ -1,5 +1,5 @@
 const { DataTypes } = require("sequelize");
-const sequelize = require("@config/database");
+const sequelize = require("../config/database"); // Corrigido o caminho de importação
 
 const Aluno = sequelize.define(
   "Aluno",
@@ -25,6 +25,7 @@ const Aluno = sequelize.define(
 );
 
 const Nota = require("./Nota");
+const Disciplina = require("./Disciplina");
 
 Aluno.hasMany(Nota, {
   foreignKey: "alunoId",
@@ -34,6 +35,20 @@ Aluno.hasMany(Nota, {
 Nota.belongsTo(Aluno, {
   foreignKey: "alunoId",
   as: "aluno",
+});
+
+Aluno.belongsToMany(Disciplina, {
+  through: Nota,
+  foreignKey: "alunoId",
+  otherKey: "disciplinaId",
+  as: "disciplinas",
+});
+
+Disciplina.belongsToMany(Aluno, {
+  through: Nota,
+  foreignKey: "disciplinaId",
+  otherKey: "alunoId",
+  as: "alunos",
 });
 
 module.exports = Aluno;
