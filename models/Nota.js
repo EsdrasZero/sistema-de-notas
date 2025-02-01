@@ -1,27 +1,25 @@
 const { DataTypes } = require("sequelize");
-const sequelize = require("../config/database"); // Corrigido o caminho de importação
+const sequelize = require("../config/database");
+const Aluno = require("./Aluno");
+const Disciplina = require("./Disciplina");
 
-const Nota = sequelize.define(
-  "Nota",
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    nota: {
-      type: DataTypes.FLOAT,
-      allowNull: false,
-      validate: {
-        min: 0,
-        max: 10,
-      },
-    },
+const Nota = sequelize.define("Nota", {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
   },
-  {
-    tableName: "notas",
-    timestamps: true,
-  }
-);
+  firstSemester: {
+    type: DataTypes.FLOAT,
+    allowNull: false,
+  },
+  secondSemester: {
+    type: DataTypes.FLOAT,
+    allowNull: false,
+  },
+});
+
+Nota.belongsTo(Aluno, { foreignKey: "alunoId", as: "aluno" });
+Nota.belongsTo(Disciplina, { foreignKey: "disciplinaId", as: "disciplina" });
 
 module.exports = Nota;

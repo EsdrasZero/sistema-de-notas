@@ -1,42 +1,25 @@
-const { Model, DataTypes } = require("sequelize");
-const sequelize = require("../config/database"); // Corrigido o caminho de importação
+const { DataTypes } = require("sequelize");
+const sequelize = require("../config/database");
 
-class Professor extends Model {}
-
-Professor.init(
-  {
-    nome: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-    },
-    senha: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
+const Professor = sequelize.define("Professor", {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
   },
-  {
-    sequelize,
-    modelName: "Professor",
-    tableName: "professores",
-    timestamps: true,
-  }
-);
-
-const Disciplina = require("./Disciplina");
-
-Professor.hasMany(Disciplina, {
-  foreignKey: "professorId",
-  as: "disciplinas",
-});
-
-Disciplina.belongsTo(Professor, {
-  foreignKey: "professorId",
-  as: "professor",
+  nome: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  senha: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
 });
 
 module.exports = Professor;

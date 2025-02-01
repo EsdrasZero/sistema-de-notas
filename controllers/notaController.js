@@ -1,12 +1,11 @@
-const Nota = require("../models/Nota"); // Corrigido o caminho de importação
-const Aluno = require("../models/Aluno"); // Corrigido o caminho de importação
-const Disciplina = require("../models/Disciplina"); // Corrigido o caminho de importação
+const Nota = require("../models/Nota");
+const Aluno = require("../models/Aluno");
+const Disciplina = require("../models/Disciplina");
 
 exports.lancarNota = async (req, res) => {
-  const { alunoId, disciplinaId, nota } = req.body;
+  const { alunoId, disciplinaId, nota, semestre } = req.body;
 
   try {
-    // Verifica se o aluno e a disciplina existem
     const aluno = await Aluno.findByPk(alunoId);
     const disciplina = await Disciplina.findByPk(disciplinaId);
 
@@ -16,8 +15,12 @@ exports.lancarNota = async (req, res) => {
         .json({ error: "Aluno ou Disciplina não encontrados." });
     }
 
-    // Cria a nota
-    const novaNota = await Nota.create({ alunoId, disciplinaId, nota });
+    const novaNota = await Nota.create({
+      alunoId,
+      disciplinaId,
+      nota,
+      semestre,
+    });
 
     res.status(201).json(novaNota);
   } catch (error) {
@@ -29,7 +32,6 @@ exports.listarNotas = async (req, res) => {
   const { alunoId } = req.params;
 
   try {
-    // Encontra todas as notas do aluno
     const notas = await Nota.findAll({
       where: { alunoId },
       include: [
@@ -46,33 +48,47 @@ exports.listarNotas = async (req, res) => {
 
     res.status(200).json(notas);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "Erro ao listar notas." });
   }
 };
 
 exports.boletimAluno = async (req, res) => {
-  const { alunoId } = req.params;
+  const alunoId = parseInt(req.params.alunoId, 10);
+
+  if (isNaN(alunoId)) {
+    return res.status(400).json({ error: "ID do aluno inválido." });
+  }
 
   try {
-    const boletim = await Nota.findAll({
+    const aluno = await Aluno.findByPk(alunoId);
+    if (!aluno) {
+      return res.status(404).json({ error: "Aluno não encontrado." });
+    }
+
+    const notas = await Nota.findAll({
       where: { alunoId },
       include: [{ model: Disciplina, as: "disciplina" }],
     });
 
-    if (!boletim.length) {
+    if (!notas.length) {
       return res
         .status(404)
         .json({ error: "Nenhuma nota encontrada para este aluno." });
     }
 
-    // Formatar boletim
-    const resultado = boletim.map((item) => ({
-      disciplina: item.disciplina.nome,
-      nota: item.nota,
-    }));
+    const resultado = {
+      name: aluno.name,
+      grades: notas.map((nota) => ({
+        subject: nota.disciplina.name,
+        firstSemester: nota.firstSemester,
+        secondSemester: nota.secondSemester,
+      })),
+    };
 
     res.status(200).json(resultado);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "Erro ao gerar boletim." });
   }
 };
