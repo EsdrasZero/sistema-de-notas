@@ -92,3 +92,33 @@ exports.boletimAluno = async (req, res) => {
     res.status(500).json({ error: "Erro ao gerar boletim." });
   }
 };
+
+exports.atualizarNota = async (req, res) => {
+  const { alunoId, disciplinaId } = req.params;
+  const { firstSemester, secondSemester } = req.body;
+
+  try {
+    const nota = await Nota.findOne({
+      where: { alunoId, disciplinaId },
+    });
+
+    if (!nota) {
+      return res.status(404).json({ error: "Nota não encontrada." });
+    }
+
+    if (firstSemester !== undefined) {
+      nota.firstSemester = firstSemester;
+    }
+
+    if (secondSemester !== undefined) {
+      nota.secondSemester = secondSemester;
+    }
+
+    await nota.save();
+
+    res.status(200).json(nota);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Erro ao atualizar nota." });
+  }
+};
