@@ -1,17 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const professoresController = require("../controllers/professoresController"); // Corrigido o caminho de importação
-const notaController = require("../controllers/notaController"); // Corrigido o caminho de importação
-const authController = require("../controllers/authController"); // Corrigido o caminho de importação
-const Aluno = require("../models/Aluno"); // Certifique-se de importar o modelo Aluno
-const Disciplina = require("../models/Disciplina"); // Certifique-se de importar o modelo Disciplina
-const Nota = require("../models/Nota"); // Certifique-se de importar o modelo Nota
-
-// Rota de autenticação
-router.post("/login", authController.login);
-
-// Rota para troca de senha
-router.put("/trocar-senha", authController.trocarSenha);
+const professoresController = require("../controllers/professoresController");
+const notaController = require("../controllers/notaController");
+const authController = require("../controllers/authController");
+const Aluno = require("../models/Aluno");
+const Disciplina = require("../models/Disciplina");
 
 // Rota para pegar todos os professores
 router.get("/professores", professoresController.getProfessores);
@@ -48,15 +41,8 @@ router.get("/disciplinas", async (req, res) => {
   }
 });
 
-// Rota para listar todas as notas
-router.get("/notas", async (req, res) => {
-  try {
-    const notas = await Nota.findAll();
-    res.json(notas);
-  } catch (error) {
-    res.status(500).json({ error: "Erro ao buscar notas." });
-  }
-});
+// Rota de login
+router.post("/login", authController.login);
 
 router.get("/", (req, res) => {
   res.send("Bem-vindo à API de Lançamento de Notas!");
