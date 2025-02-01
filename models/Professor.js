@@ -22,7 +22,7 @@ Professor.init(
   {
     sequelize,
     modelName: "Professor",
-    tableName: "professores", // Certifique-se de que o nome da tabela está em minúsculas
+    tableName: "professores",
     timestamps: true,
   }
 );

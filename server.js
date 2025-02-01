@@ -38,6 +38,50 @@ sequelize
       where: { nome: "Maria Oliveira", turma: "Turma B" },
     });
 
+    // Criar  10 alunos para Turma A
+    const nomesTurmaA = [
+      "Ana Clara",
+      "Bruno Henrique",
+      "Carlos Eduardo",
+      "Daniela Souza",
+      "Eduardo Lima",
+      "Fernanda Alves",
+      "Gabriel Santos",
+      "Helena Costa",
+      "Igor Pereira",
+      "Juliana Martins",
+    ];
+
+    const alunosTurmaA = [];
+    for (const nome of nomesTurmaA) {
+      const [aluno] = await Aluno.findOrCreate({
+        where: { nome, turma: "Turma A" },
+      });
+      alunosTurmaA.push(aluno);
+    }
+
+    // Criar 10 alunos para Turma B
+    const nomesTurmaB = [
+      "Laura Oliveira",
+      "Marcos Vinicius",
+      "Nathalia Silva",
+      "Otavio Mendes",
+      "Paula Ferreira",
+      "Rafael Almeida",
+      "Sofia Rocha",
+      "Thiago Barbosa",
+      "Vanessa Ribeiro",
+      "William Souza",
+    ];
+
+    const alunosTurmaB = [];
+    for (const nome of nomesTurmaB) {
+      const [aluno] = await Aluno.findOrCreate({
+        where: { nome, turma: "Turma B" },
+      });
+      alunosTurmaB.push(aluno);
+    }
+
     const disciplinasFixas = [
       "Artes",
       "Ciências",
@@ -56,44 +100,18 @@ sequelize
       });
     }
 
-    // Criando notas para os alunos
+    // Criando notas para todos os alunos em todas as disciplinas
     const disciplinas = await Disciplina.findAll();
+    const todosAlunos = [aluno1, aluno2, ...alunosTurmaA, ...alunosTurmaB];
 
-    const notas = [
-      {
-        alunoId: aluno1.id,
-        disciplinaId: disciplinas.find((d) => d.nome === "Matemática").id,
-        nota: 7.5,
-      },
-      {
-        alunoId: aluno1.id,
-        disciplinaId: disciplinas.find((d) => d.nome === "História").id,
-        nota: 8.0,
-      },
-      {
-        alunoId: aluno2.id,
-        disciplinaId: disciplinas.find((d) => d.nome === "Matemática").id,
-        nota: 9.0,
-      },
-      {
-        alunoId: aluno2.id,
-        disciplinaId: disciplinas.find((d) => d.nome === "História").id,
-        nota: 6.5,
-      },
-      {
-        alunoId: aluno2.id,
-        disciplinaId: disciplinas.find((d) => d.nome === "Ciências").id,
-        nota: 7.0,
-      },
-      {
-        alunoId: aluno2.id,
-        disciplinaId: disciplinas.find((d) => d.nome === "Geografia").id,
-        nota: 8.5,
-      },
-    ];
-
-    for (const nota of notas) {
-      await Nota.create(nota);
+    for (const aluno of todosAlunos) {
+      for (const disciplina of disciplinas) {
+        await Nota.create({
+          alunoId: aluno.id,
+          disciplinaId: disciplina.id,
+          nota: Math.floor(Math.random() * 6) + 5, //
+        });
+      }
     }
 
     console.log("Dados iniciais inseridos com sucesso!");
