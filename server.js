@@ -5,8 +5,14 @@ const Disciplina = require("./models/Disciplina");
 const Nota = require("./models/Nota");
 const Professor = require("./models/Professor");
 const router = require("./routes/index");
+const routes = require("./routes/index");
+const cors = require("cors");
 
 const app = express();
+app.use(cors());
+app.use(express.json());
+app.use("/", routes);
+
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
