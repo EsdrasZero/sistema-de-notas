@@ -44,6 +44,9 @@ router.get("/disciplinas", async (req, res) => {
 // Rota de login
 router.post("/login", authController.login);
 
+// Rota para atualizar nota de um aluno
+router.put("/notas/:alunoId/:disciplinaId", notaController.atualizarNota);
+
 router.get("/", (req, res) => {
   res.send("Bem-vindo à API de Lançamento de Notas!");
 });
