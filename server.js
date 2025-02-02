@@ -4,13 +4,26 @@ const Aluno = require("./models/Aluno");
 const Disciplina = require("./models/Disciplina");
 const Nota = require("./models/Nota");
 const Professor = require("./models/Professor");
+const routes = require("./routes/index");
 const router = require("./routes/index");
+const cors = require("cors");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(router);
+app.use(cors());
+app.use(express.json());
+app.use("/", routes);
+
+app.use(cors(
+  {
+    origin: "*",
+    allowedHeaders: "*",
+    methods: "*"
+  }
+));
 
 sequelize
   .authenticate()
