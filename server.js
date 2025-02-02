@@ -21,13 +21,13 @@ app.use(cors());
 app.use(express.json());
 app.use("/", routes);
 
-app.use(cors(
-  {
+app.use(
+  cors({
     origin: "*",
     allowedHeaders: "*",
-    methods: "*"
-  }
-));
+    methods: "*",
+  })
+);
 
 sequelize
   .authenticate()
@@ -47,14 +47,14 @@ sequelize
     });
 
     const students = [
-      { id: 1, name: "Alice Souza de Melo", gender: "female" },
-      { id: 2, name: "Bruno Soares", gender: "male" },
-      { id: 3, name: "Carla Pereira", gender: "female" },
+      { id: 1, name: "Rafaela Souza de Melo", gender: "female" },
+      { id: 2, name: "Esdras Soares", gender: "male" },
+      { id: 3, name: "Carolina Pereira", gender: "female" },
       { id: 4, name: "Daniel Oliveira", gender: "male" },
       { id: 5, name: "Elisa Fernandes", gender: "female" },
-      { id: 6, name: "Felipe Costa", gender: "male" },
+      { id: 6, name: "Marco Costa", gender: "male" },
       { id: 7, name: "Gabriela Assis", gender: "female" },
-      { id: 8, name: "Henrique Lima", gender: "male" },
+      { id: 8, name: "Eduardo Lima", gender: "male" },
       { id: 9, name: "Isabela Santos", gender: "female" },
       { id: 10, name: "João Silva", gender: "male" },
     ];
