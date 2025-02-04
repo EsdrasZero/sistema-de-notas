@@ -78,3 +78,5 @@ Contribuições são bem-vindas! Para colaborar:
 📄 Licença
 
 Este projeto está licenciado sob a MIT License.
+
+💡 Feito com ❤️ para a Escola Conhecimento 🎓
