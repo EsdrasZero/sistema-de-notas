@@ -1,60 +1,80 @@
-# Como rodar o projeto de Lançamento de Notas
+# Sistema de Lançamento de Notas  
 
-## Passos para rodar o projeto
+Este projeto é uma API desenvolvida com **Node.js**, **Express** e **Sequelize** para gerenciar o lançamento de notas de alunos em um banco de dados **PostgreSQL**. A API permite que professores realizem operações como lançamento, atualização e consulta de notas, além da geração de boletins.  
 
-1. **Abrir o terminal na pasta do projeto**  
-   Certifique-se de estar no diretório raiz onde está o seu projeto.
+## 📌 Funcionalidades  
+- Autenticação de professores 
+- Lançamento e atualização de notas  
+- Listagem de notas por aluno  
+- Geração automática de boletins  
 
-2. **Subir o container do PostgreSQL com Docker**  
-   ```bash
-   docker-compose up -d
+## 🛠 Tecnologias Utilizadas  
+- **Node.js**  
+- **Express**  
+- **Sequelize** (ORM para PostgreSQL)  
+- **PostgreSQL**  
+- **Docker** (para ambiente de banco de dados)  
+  
 
-Isso iniciará o banco de dados no Docker.
+## 🚀 Como Rodar o Projeto  
 
-    Verificar a conexão com o banco no DBeaver
-        Abra o DBeaver e verifique se a conexão com o PostgreSQL está funcionando.
-        Certifique-se de que o banco tem as tabelas sincronizadas e que os dados iniciais foram adicionados.
+### 1️⃣ Clonar o Repositório  
+```bash
+git clone https://github.com/seu-usuario/nome-do-repositorio.git
+cd nome-do-repositorio
 
-    Instalar as dependências do projeto (se necessário)
-    Caso tenha apagado a pasta node_modules ou esteja em um novo ambiente:
+2️⃣ Subir o Container do Banco de Dados
+
+Certifique-se de ter o Docker instalado e execute:
+
+docker-compose up -d
+
+Isso iniciará um container PostgreSQL para armazenar os dados.
+3️⃣ Verificar a Conexão com o Banco
+
+Abra o DBeaver (ou outro cliente SQL) e valide a conexão com o PostgreSQL.
+Certifique-se de que as tabelas estão sincronizadas e que os dados iniciais foram carregados corretamente.
+4️⃣ Instalar as Dependências
+
+Caso esteja rodando o projeto pela primeira vez ou tenha excluído node_modules, execute:
 
 npm install
 
-Configurar as variáveis de ambiente
-Certifique-se de que o arquivo .env está configurado corretamente:
+5️⃣ Configurar Variáveis de Ambiente
+
+Crie um arquivo .env na raiz do projeto e defina as seguintes variáveis:
 
 DB_HOST=localhost
+DB_USER=seu_usuario
+DB_PASS=sua_senha
 DB_NAME=nome_do_banco
-DB_USER=usuario
-DB_PASSWORD=senha
-DB_PORT=5432
+JWT_SECRET=sua_chave_secreta
+
+6️⃣ Iniciar o Servidor
+
+Para rodar a API, execute o seguinte comando:
+
+npm start
+
+A API estará disponível em http://localhost:3000.
+📌 Endpoints Principais
+Recurso	Endpoint	Método	Descrição
+Autenticação	/auth/login	POST	Login de professores
+Professores	/professores	GET/POST	Gerenciamento de professores
+Notas	/notas	GET/POST/PUT	Gerenciamento de notas
+Alunos	/alunos	GET	Listagem de alunos
+Disciplinas	/disciplinas	GET	Listagem de disciplinas
 
 
-Iniciar o servidor Node.js
-Use o comando:
+🤝 Contribuição
 
-node server.js
+Contribuições são bem-vindas! Para colaborar:
 
-Ou, se quiser monitorar mudanças no código durante o desenvolvimento:
+    Faça um fork do repositório
+    Crie uma branch com sua funcionalidade 
+    Faça um commit (git commit -m 'Adiciona nova funcionalidade')
+    Envie um pull request
 
-    nodemon server.js
+📄 Licença
 
-Resumo dos principais comandos
-Ação	Comando
-Subir o banco de dados (Docker)	docker-compose up -d
-Instalar dependências	npm install
-Iniciar o servidor	node server.js ou nodemon server.js
-Ver logs do banco de dados	docker logs nome_do_container
-Parar os containers	docker-compose down
-Verificar se tudo está funcionando
-
-    Acesse no navegador ou Postman:
-    http://localhost:3000
-    Você deve ver a mensagem:
-    "API de Lançamento de Notas está funcionando!"
-
-    Teste as rotas criadas no Postman:
-        GET /api/professores
-        POST /api/professores (para criar um professor)
-        POST /api/notas (para lançar uma nota)
-        GET /api/notas/:alunoId (para listar notas de um aluno)
+Este projeto está licenciado sob a MIT License.
