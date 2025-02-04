@@ -20,7 +20,7 @@ Este projeto é uma API desenvolvida com **Node.js**, **Express** e **Sequelize*
 
 ### 1️⃣ Clonar o Repositório  
 ```bash
-git clone https://github.com/seu-usuario/nome-do-repositorio.git
+git clone https://github.com/carolinanog/front-report-card.git
 cd nome-do-repositorio
 
 2️⃣ Subir o Container do Banco de Dados
